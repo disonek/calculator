@@ -2,26 +2,28 @@
 #include "Expressions.hpp"
 #include "Visitor.hpp"
 
+namespace abstr {
 class VisitorConcrete : public Visitor
 {
 public:
-    int visitAdd(std::unique_ptr<Add> expr) const override
+    int visitAdd(const Add& expr) const override
     {
-        return expr->evaluate();
+        return expr.evaluate();
     }
 
-    int visitSub(std::unique_ptr<Subtraction> expr) const override
+    int visitSub(const Subtraction& expr) const override
     {
-        return expr->evaluate();
+        return expr.evaluate();
     }
 
-    int visitDiv(std::unique_ptr<Divide> expr) const override
+    int visitDiv(const Divide& expr) const override
     {
-        return expr->evaluate();
+        return expr.evaluate();
     }
 
-    int visitMul(std::unique_ptr<Multiply> expr) const override
+    int visitMul(const Multiply& expr) const override
     {
-        return expr->evaluate();
+        return expr.evaluate();
     }
 };
+} // namespace abstr

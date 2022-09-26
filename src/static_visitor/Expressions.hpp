@@ -1,9 +1,5 @@
 #pragma once
-#include <memory>
-
-#include "Visitor.hpp"
-
-namespace abstr {
+namespace stat {
 
 class Expression
 {
@@ -15,9 +11,6 @@ public:
         , rightHand{rightHand}
     {
     }
-
-    virtual int evaluate() const = 0;
-    virtual int accept(std::unique_ptr<Visitor>& visitor) const = 0;
 
 protected:
     int leftHand;
@@ -32,12 +25,7 @@ public:
     {
     }
 
-    int accept(std::unique_ptr<Visitor>& visitor) const override
-    {
-        return visitor->visitAdd(*this);
-    }
-
-    int evaluate() const override
+    int evaluate() const
     {
         return leftHand + rightHand;
     }
@@ -51,12 +39,7 @@ public:
     {
     }
 
-    int accept(std::unique_ptr<Visitor>& visitor) const override
-    {
-        return visitor->visitSub(*this);
-    }
-
-    int evaluate() const override
+    int evaluate() const
     {
         return leftHand - rightHand;
     }
@@ -70,12 +53,7 @@ public:
     {
     }
 
-    int accept(std::unique_ptr<Visitor>& visitor) const override
-    {
-        return visitor->visitDiv(*this);
-    }
-
-    int evaluate() const override
+    int evaluate() const
     {
         if(rightHand == 0)
         {
@@ -93,13 +71,10 @@ public:
         : Expression(leftHand, rightHand)
     {
     }
-    int accept(std::unique_ptr<Visitor>& visitor) const override
-    {
-        return visitor->visitMul(*this);
-    }
-    int evaluate() const override
+
+    int evaluate() const
     {
         return leftHand * rightHand;
     }
 };
-} // namespace abstr
+} // namespace stat
