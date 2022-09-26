@@ -1,0 +1,4 @@
+[submodule "ext/hive"]
+	path = ext/hive
+	url = https://gitlab.syncad.com/hive/hive.git
+	branch = "develop"
