@@ -1,7 +1,7 @@
 ## Dependeny installation
 I have been using WSL2 environment: <br />
 Distributor ID: Ubuntu <br />
-Description:    Ubuntu 20.04.5 LTS<br />
+Description:    Ubuntu 20.04.5 LTS <br />
 Release:        20.04 <br />
 Codename:       focal <br />
 
@@ -17,7 +17,7 @@ To install dependecies run: <br />
 mkdir build && cmake .. <br />
 
 Example of build command: <br />
-/usr/bin/cmake --build <build_directory> --config Debug --target all -j <cores_nr> -- <br />
+/usr/bin/cmake --build <build_directory> --config Debug --target all -j <cores_count> -- <br />
 
 
 ## Note
