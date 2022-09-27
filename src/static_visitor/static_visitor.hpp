@@ -1,12 +1,11 @@
 #pragma once
 
 #include <fc/static_variant.hpp>
-#include <iostream>
 
-#include "Expressions.hpp"
+#include "expressions.hpp"
 
-namespace stat {
-using operation = fc::static_variant<Add, Subtraction, Divide, Multiply>;
+namespace sv {
+using operation = fc::static_variant<add, sub, div, mul>;
 
 struct static_visitor
 {
@@ -19,4 +18,4 @@ struct static_visitor
     }
 };
 
-} // namespace stat
+} // namespace sv
