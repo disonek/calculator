@@ -17,3 +17,18 @@ void basic_static_visitor_test()
 
     assert(36 == result);
 }
+
+void static_divide_by_zero()
+{
+    sv::operation div = sv::div{};
+    auto visitor = sv::static_visitor{5, 0};
+
+    try
+    {
+        div.visit(visitor);
+        assert(false);
+    }
+    catch(const std::exception& err)
+    {
+    }
+}

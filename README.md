@@ -25,6 +25,8 @@ To run run tests perform command in project root directory: <br />
 ./calculator/build/tests/visitor_tests <br />
 
 ## Example of usage
+~ ./calculator/build/calculator -h <br />
+
 ~ ./calculator/build/calculator 3 + 6 <br />
 calculated by static visitor: 9 <br />
 calculated by abstract visitor: 9 <br />
@@ -37,6 +39,7 @@ calculated by abstract visitor: 900 <br />
 calculated by static visitor: 899 <br />
 calculated by abstract visitor: 899 <br />
 q
+
 
 ## Note
 At the begining I have been trying to use Dockerfile however for some reasons errors occurred so I decided to use local environment <br />

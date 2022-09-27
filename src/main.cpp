@@ -79,7 +79,7 @@ void run_in_interactive_mode()
             calculate_by_static_visitor(leftHand, op, rightHand);
             calculate_by_abstract_visitor(leftHand, op, rightHand);
         }
-        catch(const std::runtime_error& err)
+        catch(const std::exception& err)
         {
             std::cerr << err.what() << std::endl;
         }
@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
         .help("operator allowed are [+,-,/,*], note as your shell can treat them as special charactes so its "
               "recommended to use '*' or \\*")
         .default_value("");
-    program.add_argument("rightHand").help("rightHand").scan<'i', int>().default_value(0);
+    program.add_argument("rightHand").help("right hand of the expression").scan<'i', int>().default_value(0);
 
     program.add_description("Example of interactive mode:\n./calculator -i\n./calculator --interactive\n"
                             "Example of one time usage  :\n./calculator 3 '*' 5\n./calculator 3 + 5 \n");
@@ -125,7 +125,6 @@ int main(int argc, char* argv[])
         auto leftHand = program.get<int>("leftHand");
         std::string op = program.get("operator");
         auto rightHand = program.get<int>("rightHand");
-
         calculate_by_static_visitor(leftHand, op, rightHand);
         calculate_by_abstract_visitor(leftHand, op, rightHand);
     }

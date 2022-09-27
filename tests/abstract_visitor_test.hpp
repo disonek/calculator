@@ -22,3 +22,18 @@ void basic_abstract_visitor_test()
 
     assert(36 == result);
 }
+void abstract_divide_by_zero()
+{
+    av::div div{};
+
+    std::unique_ptr<av::visitor> visitor = std::make_unique<av::visitor_concrete>(5, 0);
+
+    try
+    {
+        div.accept(visitor);
+        assert(false);
+    }
+    catch(const std::exception& err)
+    {
+    }
+}

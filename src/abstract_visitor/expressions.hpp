@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <stdexcept>
 
 #include "visitor.hpp"
 
@@ -53,7 +54,7 @@ public:
     {
         if(rightHand == 0)
         {
-            // throw exception
+            throw std::logic_error("Devide by 0 exception");
         }
 
         return leftHand / rightHand;
