@@ -12,7 +12,7 @@ target_compile_features(visitor
 )
 
 add_executable(calculator src/main.cpp)
-target_link_libraries(calculator PRIVATE fc argparse::argparse)
+target_link_libraries(calculator PRIVATE visitor argparse::argparse)
 
 
 add_subdirectory(ext/hive)

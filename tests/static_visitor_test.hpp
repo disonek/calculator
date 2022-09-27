@@ -5,13 +5,14 @@
 
 void basic_static_visitor_test()
 {
-    std::vector<sv::operation> operations{sv::add{5, 5}, sv::sub{5, 5}, sv::mul{5, 5}, sv::div{5, 5}};
+    std::vector<sv::operation> operations{sv::add{}, sv::sub{}, sv::mul{}, sv::div{}};
+    auto visitor = sv::static_visitor{5, 5};
 
     int result{};
 
     for(auto operation : operations)
     {
-        result += operation.visit(sv::static_visitor{});
+        result += operation.visit(visitor);
     }
 
     assert(36 == result);

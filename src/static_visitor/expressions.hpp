@@ -1,27 +1,7 @@
 #pragma once
 namespace sv {
 
-template <typename T>
-class expression
-{
-public:
-    expression(int leftHand, int rightHand)
-        : leftHand{leftHand}
-        , rightHand{rightHand}
-    {
-    }
-
-    int evaluate() const
-    {
-        return T{}.evaluate(leftHand, rightHand);
-    }
-
-protected:
-    int leftHand;
-    int rightHand;
-};
-
-class add_opperation
+class add
 {
 public:
     int evaluate(int leftHand, int rightHand) const
@@ -30,7 +10,7 @@ public:
     }
 };
 
-class sub_opperation
+class sub
 {
 public:
     int evaluate(int leftHand, int rightHand) const
@@ -39,7 +19,7 @@ public:
     }
 };
 
-class div_opperation
+class div
 {
 public:
     int evaluate(int leftHand, int rightHand) const
@@ -53,7 +33,7 @@ public:
     }
 };
 
-class mul_opperation
+class mul
 {
 public:
     int evaluate(int leftHand, int rightHand) const
@@ -62,8 +42,4 @@ public:
     }
 };
 
-using add = expression<add_opperation>;
-using sub = expression<sub_opperation>;
-using div = expression<div_opperation>;
-using mul = expression<mul_opperation>;
 } // namespace sv

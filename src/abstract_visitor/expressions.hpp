@@ -9,34 +9,19 @@ class expression
 public:
     virtual ~expression() = default;
 
-    expression(int leftHand, int rightHand)
-        : leftHand{leftHand}
-        , rightHand{rightHand}
-    {
-    }
-
-    virtual int evaluate() const = 0;
+    virtual int evaluate(int leftHand, int rightHand) const = 0;
     virtual int accept(std::unique_ptr<visitor>& visitor) const = 0;
-
-protected:
-    int leftHand;
-    int rightHand;
 };
 
 class add : public expression
 {
 public:
-    add(int leftHand, int rightHand)
-        : expression(leftHand, rightHand)
-    {
-    }
-
     int accept(std::unique_ptr<visitor>& visitor) const override
     {
         return visitor->visit(this);
     }
 
-    int evaluate() const override
+    int evaluate(int leftHand, int rightHand) const override
     {
         return leftHand + rightHand;
     }
@@ -45,17 +30,12 @@ public:
 class sub : public expression
 {
 public:
-    sub(int leftHand, int rightHand)
-        : expression(leftHand, rightHand)
-    {
-    }
-
     int accept(std::unique_ptr<visitor>& visitor) const override
     {
         return visitor->visit(this);
     }
 
-    int evaluate() const override
+    int evaluate(int leftHand, int rightHand) const override
     {
         return leftHand - rightHand;
     }
@@ -64,17 +44,12 @@ public:
 class div : public expression
 {
 public:
-    div(int leftHand, int rightHand)
-        : expression(leftHand, rightHand)
-    {
-    }
-
     int accept(std::unique_ptr<visitor>& visitor) const override
     {
         return visitor->visit(this);
     }
 
-    int evaluate() const override
+    int evaluate(int leftHand, int rightHand) const override
     {
         if(rightHand == 0)
         {
@@ -88,15 +63,11 @@ public:
 class mul : public expression
 {
 public:
-    mul(int leftHand, int rightHand)
-        : expression(leftHand, rightHand)
-    {
-    }
     int accept(std::unique_ptr<visitor>& visitor) const override
     {
         return visitor->visit(this);
     }
-    int evaluate() const override
+    int evaluate(int leftHand, int rightHand) const override
     {
         return leftHand * rightHand;
     }
