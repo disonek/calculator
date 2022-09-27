@@ -19,6 +19,10 @@ mkdir build && cmake .. <br />
 Example of build command: <br />
 /usr/bin/cmake --build <build_directory> --config Debug --target all -j <cores_count> -- <br />
 
+## Tests 
+I did not use any testing framework. I did basic tests based on <cassert> <br />
+To run run tests perform command in project root directory:
+<build_directory>/tests/visitor_tests
 
 ## Note
 At the begining I have been trying to use Dockerfile however for some reasons errors occurred so I decided to use local environment <br />

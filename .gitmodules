@@ -2,3 +2,6 @@
 	path = ext/hive
 	url = https://gitlab.syncad.com/hive/hive.git
 	branch = "develop"
+[submodule "ext/argparse"]
+	path = ext/argparse
+	url = https://github.com/p-ranav/argparse.git

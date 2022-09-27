@@ -1,37 +1,49 @@
-// #include <iostream>
-#include <vector>
+#include <argparse/argparse.hpp>
+#include <iostream>
+#include <string>
 
 #include "abstract_visitor/abstract_visitor.hpp"
-// #include <fc/static_variant.hpp>
+#include "static_visitor/static_visitor.hpp"
 
-// #include "static_visitor/expressions.hpp"
-// #include "static_visitor/static_visitor.hpp"
+int main(int argc, char* argv[])
+{
+    argparse::ArgumentParser program("program_name");
 
-// int main()
-// {
-//     std::vector<stat::operation> operations{
-//         stat::add{123, 123}, stat::sub{123, 123}, stat::mul{123, 123}, stat::div{123, 123}};
+    program.add_argument("leftHand").help("left hand of the expression").scan<'i', int>();
+    program.add_argument("operator")
+        .help("operator allowed are [+,-,/,*] note as your shell can treat them as special charactes so its "
+              "recommended to use '*' or \\* ");
+    program.add_argument("rightHand").help("rightHand").scan<'i', int>();
 
-//     for(auto operation : operations)
-//     {
-//         std::cout << operation.visit(stat::static_visitor{}) << std::endl;
-//     }
-// }
+    try
+    {
+        program.parse_args(argc, argv);
+    }
+    catch(const std::runtime_error& err)
+    {
+        std::cerr << err.what() << std::endl;
+        std::cerr << program;
+        std::exit(1);
+    }
 
-// int abstract_visitor()
-// {
-//     std::vector<std::unique_ptr<expression>> expresions{};
-//     expresions.push_back(std::make_unique<add>(22, 33));
-//     expresions.push_back(std::make_unique<sub>(33, 11));
-//     expresions.push_back(std::make_unique<mul>(22, 33));
-//     expresions.push_back(std::make_unique<div>(33, 11));
+    auto leftHand = program.get<int>("leftHand");
+    std::string op = program.get("operator");
+    auto rightHand = program.get<int>("rightHand");
 
-//     int addExpresionsResults{};
-//     std::unique_ptr<Visitor> visitor = std::make_unique<VisitorConcrete>();
-//     for(auto& expression : expresions)
-//     {
-//         addExpresionsResults += expression->accept(visitor);
-//     }
+    std::map<std::string, sv::operation> operations{{"+", sv::add{leftHand, rightHand}},
+                                                    {"-", sv::sub{leftHand, rightHand}},
+                                                    {"*", sv::mul{leftHand, rightHand}},
+                                                    {"/", sv::div{leftHand, rightHand}}};
+    auto operation_it = operations.find(op);
+    if(operation_it != operations.end())
+    {
+        std::cout << operation_it->second.visit(sv::static_visitor{}) << "\n";
+    }
+    else
+    {
+        std::cout << "provided not supported operation"
+                  << "\n";
+    }
 
-//     std::cout << addExpresionsResults << std::endl;
-// }
+    return 0;
+}
