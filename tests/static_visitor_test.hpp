@@ -6,7 +6,7 @@
 void basic_static_visitor_test()
 {
     std::vector<sv::operation> operations{sv::add{}, sv::sub{}, sv::mul{}, sv::div{}};
-    auto visitor = sv::static_visitor{5, 5};
+    auto visitor = sv::expression_evaluator{5, 5};
 
     int result{};
 
@@ -21,7 +21,7 @@ void basic_static_visitor_test()
 void static_divide_by_zero()
 {
     sv::operation div = sv::div{};
-    auto visitor = sv::static_visitor{5, 0};
+    auto visitor = sv::expression_evaluator{5, 0};
 
     try
     {

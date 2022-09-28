@@ -1,32 +1,33 @@
+#include <array>
 #include <cassert>
 #include <numeric>
-#include <vector>
 
 #include "abstract_visitor/abstract_visitor.hpp"
 
 void basic_abstract_visitor_test()
 {
-    std::vector<std::unique_ptr<av::expression>> expresions{};
-    expresions.push_back(std::make_unique<av::div>());
-    expresions.push_back(std::make_unique<av::add>());
-    expresions.push_back(std::make_unique<av::sub>());
-    expresions.push_back(std::make_unique<av::mul>());
+    std::array<std::unique_ptr<av::expression>, 4> expresions{std::make_unique<av::add>(),
+                                                              std::make_unique<av::sub>(),
+                                                              std::make_unique<av::mul>(),
+                                                              std::make_unique<av::div>()};
 
-    std::unique_ptr<av::visitor> visitor = std::make_unique<av::visitor_concrete>(5, 5);
+    std::unique_ptr<av::expression_visitor> visitor = std::make_unique<av::expression_evaluator>(5, 5);
 
     int result{};
     for(auto& expr : expresions)
     {
-        result += expr->accept(visitor);
+        expr->accept(visitor);
+        result += visitor->get_result();
     }
 
     assert(36 == result);
 }
+
 void abstract_divide_by_zero()
 {
     av::div div{};
 
-    std::unique_ptr<av::visitor> visitor = std::make_unique<av::visitor_concrete>(5, 0);
+    std::unique_ptr<av::expression_visitor> visitor = std::make_unique<av::expression_evaluator>(5, 0);
 
     try
     {

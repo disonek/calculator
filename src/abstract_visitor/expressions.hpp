@@ -11,15 +11,15 @@ public:
     virtual ~expression() = default;
 
     virtual int evaluate(int leftHand, int rightHand) const = 0;
-    virtual int accept(std::unique_ptr<visitor>& visitor) const = 0;
+    virtual void accept(std::unique_ptr<expression_visitor>& visitor) const = 0;
 };
 
 class add : public expression
 {
 public:
-    int accept(std::unique_ptr<visitor>& visitor) const override
+    void accept(std::unique_ptr<expression_visitor>& visitor) const override
     {
-        return visitor->visit(this);
+        visitor->visitAdd(this);
     }
 
     int evaluate(int leftHand, int rightHand) const override
@@ -31,9 +31,9 @@ public:
 class sub : public expression
 {
 public:
-    int accept(std::unique_ptr<visitor>& visitor) const override
+    void accept(std::unique_ptr<expression_visitor>& visitor) const override
     {
-        return visitor->visit(this);
+        visitor->visitSub(this);
     }
 
     int evaluate(int leftHand, int rightHand) const override
@@ -45,9 +45,9 @@ public:
 class div : public expression
 {
 public:
-    int accept(std::unique_ptr<visitor>& visitor) const override
+    void accept(std::unique_ptr<expression_visitor>& visitor) const override
     {
-        return visitor->visit(this);
+        visitor->visitDiv(this);
     }
 
     int evaluate(int leftHand, int rightHand) const override
@@ -64,9 +64,9 @@ public:
 class mul : public expression
 {
 public:
-    int accept(std::unique_ptr<visitor>& visitor) const override
+    void accept(std::unique_ptr<expression_visitor>& visitor) const override
     {
-        return visitor->visit(this);
+        visitor->visitMul(this);
     }
     int evaluate(int leftHand, int rightHand) const override
     {

@@ -1,40 +1,151 @@
 #pragma once
+#include <iostream>
+#include <string>
+
 #include "expressions.hpp"
 
 namespace av {
 
-class visitor_concrete : public visitor
+class expression_evaluator : public expression_visitor
 {
 public:
-    visitor_concrete(int leftHand, int rightHand)
+    expression_evaluator(int leftHand, int rightHand)
         : leftHand{leftHand}
         , rightHand{rightHand}
+        , result{}
     {
     }
 
-    int visit(const add* expr) const override
+    void visitAdd(const add* expr) override
     {
-        return expr->evaluate(leftHand, rightHand);
+        result = expr->evaluate(leftHand, rightHand);
     }
 
-    int visit(const sub* expr) const override
+    void visitSub(const sub* expr) override
     {
-        return expr->evaluate(leftHand, rightHand);
+        result = expr->evaluate(leftHand, rightHand);
     }
 
-    int visit(const div* expr) const override
+    void visitDiv(const div* expr) override
     {
-        return expr->evaluate(leftHand, rightHand);
+        result = expr->evaluate(leftHand, rightHand);
     }
 
-    int visit(const mul* expr) const override
+    void visitMul(const mul* expr) override
     {
-        return expr->evaluate(leftHand, rightHand);
+        result = expr->evaluate(leftHand, rightHand);
     }
 
-protected:
+    int get_result() override
+    {
+        return result;
+    }
+
+private:
     int leftHand;
     int rightHand;
+    int result;
+};
+
+class expression_evaluate_and_print : public expression_evaluator
+{
+public:
+    expression_evaluate_and_print(int leftHand, int rightHand)
+        : expression_evaluator(leftHand, rightHand)
+    {
+    }
+
+    void visitAdd(const add* expr) override
+    {
+        expression_evaluator::visitAdd(expr);
+        print(get_result());
+    }
+
+    void visitSub(const sub* expr) override
+    {
+        expression_evaluator::visitSub(expr);
+        print(get_result());
+    }
+
+    void visitDiv(const div* expr) override
+    {
+        expression_evaluator::visitDiv(expr);
+        print(get_result());
+    }
+
+    void visitMul(const mul* expr) override
+    {
+        expression_evaluator::visitMul(expr);
+        print(get_result());
+    }
+
+private:
+    void print(int result)
+    {
+        std::cout << "calculated by abstract visitor: " << result << "\n";
+    }
+};
+
+class expresion_allowed_sign_aware_printer : public expression_evaluate_and_print
+{
+public:
+    expresion_allowed_sign_aware_printer(int leftHand, int rightHand, std::string sign)
+        : expression_evaluate_and_print(leftHand, rightHand)
+        , sign{sign}
+    {
+    }
+
+    void visitAdd(const add* expr) override
+    {
+        if(!is_sign_supported() || sign != "+")
+        {
+            return;
+        }
+        expression_evaluate_and_print::visitAdd(expr);
+    }
+
+    void visitSub(const sub* expr) override
+    {
+        if(!is_sign_supported() || sign != "-")
+        {
+            return;
+        }
+        expression_evaluate_and_print::visitSub(expr);
+    }
+
+    void visitDiv(const div* expr) override
+    {
+        if(!is_sign_supported() || sign != "/")
+        {
+            return;
+        }
+        expression_evaluate_and_print::visitDiv(expr);
+    }
+
+    void visitMul(const mul* expr) override
+    {
+        if(!is_sign_supported() || sign != "*")
+        {
+            return;
+        }
+        expression_evaluate_and_print::visitMul(expr);
+    }
+
+private:
+    bool is_sign_supported()
+    {
+        std::string supported_signs{"+-/*"};
+        bool result = supported_signs.find(sign) != std::string::npos;
+        if(!result)
+        {
+            std::cout << "provided not supported operation"
+                      << "\n";
+        }
+
+        return result;
+    }
+
+    std::string sign;
 };
 
 } // namespace av

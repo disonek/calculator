@@ -1,4 +1,5 @@
 #include <argparse/argparse.hpp>
+#include <array>
 #include <iostream>
 #include <string>
 
@@ -7,23 +8,16 @@
 
 void calculate_by_abstract_visitor(int leftHand, std::string op, int rightHand)
 {
-    std::map<std::string, std::unique_ptr<av::expression>> operations{};
-    operations.insert({"+", std::make_unique<av::add>()});
-    operations.insert({"-", std::make_unique<av::sub>()});
-    operations.insert({"*", std::make_unique<av::mul>()});
-    operations.insert({"/", std::make_unique<av::div>()});
+    std::array<std::unique_ptr<av::expression>, 4> operations{std::make_unique<av::add>(),
+                                                              std::make_unique<av::sub>(),
+                                                              std::make_unique<av::mul>(),
+                                                              std::make_unique<av::div>()};
 
-    std::unique_ptr<av::visitor> visitor = std::make_unique<av::visitor_concrete>(leftHand, rightHand);
-
-    auto operation_it = operations.find(op);
-    if(operation_it != operations.end())
+    std::unique_ptr<av::expression_visitor> visitor =
+        std::make_unique<av::expresion_allowed_sign_aware_printer>(leftHand, rightHand, op);
+    for(auto& operation : operations)
     {
-        std::cout << "calculated by abstract visitor: " << operation_it->second->accept(visitor) << "\n";
-    }
-    else
-    {
-        std::cout << "provided not supported operation"
-                  << "\n";
+        operation->accept(visitor);
     }
 }
 
@@ -32,11 +26,11 @@ void calculate_by_static_visitor(int leftHand, std::string op, int rightHand)
     std::map<std::string, sv::operation> operations{
         {"+", sv::add{}}, {"-", sv::sub{}}, {"*", sv::mul{}}, {"/", sv::div{}}};
 
-    auto visitor = sv::static_visitor{leftHand, rightHand};
+    auto visitor = sv::expression_evaluator_and_printer{leftHand, rightHand};
     auto operation_it = operations.find(op);
     if(operation_it != operations.end())
     {
-        std::cout << "calculated by static visitor: " << operation_it->second.visit(visitor) << "\n";
+        operation_it->second.visit(visitor);
     }
     else
     {
@@ -104,10 +98,14 @@ int main(int argc, char* argv[])
         .help("added flag will run program in interactive mode, to quit type 'q'")
         .default_value(false)
         .implicit_value(true);
-
     try
     {
         program.parse_args(argc, argv);
+        if(argc <= 1)
+        {
+            std::cout << program << std::endl;
+            return 0;
+        }
     }
     catch(const std::runtime_error& err)
     {

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "abstract_visitor_test.hpp"
 #include "static_visitor_test.hpp"
 
@@ -8,4 +10,5 @@ int main()
 
     abstract_divide_by_zero();
     static_divide_by_zero();
+    std::cout << "OK" << std::endl;
 }
